@@ -205,7 +205,12 @@ void GameLayer::update(float dt)
 			(contact.fixtureA == m_playerFixture && contact.fixtureB == m_bottomFixture))
 		{
 			//CCLOG("down !");
-			m_canJump = true;
+			if (m_canJump == false)
+			{
+				m_player->walk();
+				m_canJump = true;
+			}
+
 		}
 	}
 }

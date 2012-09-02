@@ -31,18 +31,23 @@ CCSprite* player::initPlayer()
 	CCSpriteFrameCache* cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 
 	CCArray *animFrames = new CCArray(2);
-
 	CCSpriteFrame *frame = cache->spriteFrameByName("monkey/walk/right_1.png");
 	animFrames->addObject(frame);
-
 	frame = cache->spriteFrameByName("monkey/walk/right_2.png");
 	animFrames->addObject(frame);
+	//animFrames->autorelease();
+	walkAnimation= CCAnimation::animationWithSpriteFrames(animFrames, 0.1f);
+	walkAnimation->retain();
 
-	CCAnimation *animation = CCAnimation::animationWithSpriteFrames(animFrames, 0.1f);
+	CCArray *jumpFrames = new CCArray(1);	
+	frame = cache->spriteFrameByName("monkey/jump/right.png");
+	jumpFrames->addObject(frame);
+	jumpAnimation = CCAnimation::animationWithSpriteFrames(jumpFrames, 0.1f);
+	jumpAnimation->retain();
 
 	playerSprite = CCSprite::spriteWithSpriteFrameName("monkey/walk/right_1.png");
 	playerSprite->setPosition(ccp(size.width/5, size.height/2));
-	playerSprite->runAction(CCRepeatForever::actionWithAction(CCAnimate::actionWithAnimation(animation)));
+	playerSprite->runAction(CCRepeatForever::actionWithAction(CCAnimate::actionWithAnimation(walkAnimation)));
 
 	b2BodyDef playerBodyDef;
 	playerBodyDef.type = b2_dynamicBody;
@@ -67,9 +72,18 @@ CCSprite* player::initPlayer()
 
 void player::jump()
 {
-	printf("jump!");
+	CCLOG("jump!");
+	playerSprite->stopAllActions();
+	playerSprite->runAction(CCRepeatForever::actionWithAction(CCAnimate::actionWithAnimation(jumpAnimation)));
 	b2Vec2 impulse = b2Vec2(2.0f, 30.0f);
 	playerBody->ApplyLinearImpulse(impulse, playerBody->GetWorldCenter());
+}
+
+void player::walk()
+{
+	CCLOG("walk !");
+	playerSprite->stopAllActions();
+	playerSprite->runAction(CCRepeatForever::actionWithAction(CCAnimate::actionWithAnimation(walkAnimation)));
 }
 
 b2Fixture* player::GetPlayerFixture()

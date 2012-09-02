@@ -15,6 +15,8 @@ public:
 
 	void jump(void);
 
+	void walk(void);
+
 private:
 	cocos2d::CCLayer* gameLayer;
 
@@ -23,6 +25,10 @@ private:
 	b2Body* playerBody;
 
 	b2Fixture* m_playerFixture;
+
+	cocos2d::CCAnimation* walkAnimation;
+
+	cocos2d::CCAnimation* jumpAnimation;
 
 };
 
