@@ -2,8 +2,17 @@
 
 #define PTM_RATIO 32
 
+
+
 USING_NS_CC;
 
+
+enum 
+{
+	kTagPlayer,
+	kTagNode,
+	kTagGrossini,
+};
 
 void GameLayer::initPhysics()
 {
@@ -43,8 +52,8 @@ void GameLayer::initPhysics()
 	groundBody->CreateFixture(&groundBox,0);
 
 	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox,0);
+	//groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
+	//groundBody->CreateFixture(&groundBox,0);
 
 	m_debugDraw = new GLESDebugDraw(PTM_RATIO);
 	world->SetDebugDraw(m_debugDraw);
@@ -68,6 +77,26 @@ CCScene* GameLayer::scene()
 
     // return the scene
     return scene;
+}
+
+void GameLayer::initBackground()
+{
+	CCTileMapAtlas* tilemap = CCTileMapAtlas::create(s_TilesPng, s_LevelMapTga, 16, 16);
+	tilemap->releaseMap();
+
+	tilemap->setAnchorPoint(ccp(0,0));
+	tilemap->getTexture()->setAliasTexParameters();
+
+	CCSprite* background = CCSprite::create(s_back);
+	background->setScale(1.5f);
+	background->setAnchorPoint(ccp(0,0));
+
+	CCParallaxNode* voidNode = CCParallaxNode::create();
+
+	voidNode->addChild(background, -1, ccp(0.4f, 0.5f), CCPointZero);
+	voidNode->addChild(tilemap, 1, ccp(1.0f, 1.0f), ccp(0, -200));
+
+	this->addChild(voidNode, 0, kTagNode);
 }
 
 // on "init" you need to initialize your instance
@@ -128,19 +157,22 @@ bool GameLayer::init()
     //// add the sprite as a child to this layer
     //this->addChild(pSprite, 0);
     
+	this->initBackground();
+
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
-	cache->addSpriteFramesWithFile("background.plist");
+	//cache->addSpriteFramesWithFile("background.plist");
 	cache->addSpriteFramesWithFile("jungle.plist");
 
-	CCSprite* backgroud = CCSprite::spriteWithSpriteFrameName("jungle.png");
-	this->addChild(backgroud, 0);
-	backgroud->setAnchorPoint(CCPointZero);
-	backgroud->setPosition(CCPointZero);
+	//CCSprite* backgroud = CCSprite::spriteWithSpriteFrameName("jungle.png");
+	//this->addChild(backgroud, 0);
+	//backgroud->setAnchorPoint(CCPointZero);
+	//backgroud->setPosition(CCPointZero);
 
 
 	CCSprite* floorBackground = CCSprite::spriteWithSpriteFrameName("floor/grassbehind.png");
 	this->addChild(floorBackground, 1);
 	floorBackground->setAnchorPoint(CCPointZero);
+	b2Body* floorBody = addPhysicsObject(floorBackground, b2_staticBody);
 	floorBackground->setPosition(CCPointZero);
 
 	m_player = new player(this);
@@ -150,7 +182,7 @@ bool GameLayer::init()
 	m_playerFixture = m_player->GetPlayerFixture();
 
 
-	this->addChild(newPlayerSprite, 1);
+	this->addChild(newPlayerSprite, 1, kTagPlayer);
 
 	this->setTouchEnabled(true);
 
@@ -190,9 +222,23 @@ void GameLayer::update(float dt)
 	for(b2Body *b = world->GetBodyList(); b; b=b->GetNext()) {
 		if (b->GetUserData() != NULL) {
 			CCSprite *sprite = (CCSprite *)b->GetUserData();
+			CCPoint spritePrevPosition = sprite->getPosition();
 			sprite->setPosition(ccp(b->GetPosition().x * PTM_RATIO,
 				b->GetPosition().y * PTM_RATIO));
 			sprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+
+			if (sprite->getTag() == kTagPlayer)
+			{
+				CCPoint diff = ccpSub(sprite->getPosition(), spritePrevPosition);
+
+				CCNode* backgroundNode = getChildByTag(kTagNode);
+				CCPoint currentPos = backgroundNode->getPosition();
+				CCPoint newPos = ccp(currentPos.x + diff.x, currentPos.y);
+				backgroundNode->setPosition(newPos);
+
+				//CCPoint mainLayerPos = this->getPosition();
+				//this->setPosition(ccpSub(mainLayerPos, diff));
+			}
 		}
 	}
 
@@ -266,6 +312,32 @@ void GameLayer::ccTouchesEnded(cocos2d::CCSet *touches, cocos2d::CCEvent *pEvent
 b2World* GameLayer::GetPhysicsWorld()
 {
 	return world;
+}
+
+b2Body* GameLayer::addPhysicsObject(cocos2d::CCSprite* ObjectSprite, b2BodyType type)
+{
+	CCPoint initPos = ccp(0.0f, 0.0f);
+	ObjectSprite->setPosition(initPos);
+	b2Body* newObjectBody = NULL;
+	b2BodyDef newObjectBodyDef;
+	newObjectBodyDef.type = type;
+	newObjectBodyDef.position.Set(initPos.x, initPos.y);
+	newObjectBodyDef.userData = ObjectSprite;
+	newObjectBody = world->CreateBody(&newObjectBodyDef);
+
+
+
+	b2PolygonShape newObjectShape;
+	newObjectShape.SetAsBox(ObjectSprite->getContentSize().width/PTM_RATIO/2, ObjectSprite->getContentSize().height/PTM_RATIO/2);
+
+	b2FixtureDef newObjectFixtureDef;
+	newObjectFixtureDef.shape = &newObjectShape;
+	//newObjectFixtureDef.density = 10.0f;
+	//newObjectFixtureDef.friction = 1.0f;
+	//newObjectFixtureDef.restitution = 0.0f;
+	newObjectBody->CreateFixture(&newObjectFixtureDef);
+
+	return newObjectBody;
 }
 
 void GameLayer::draw()

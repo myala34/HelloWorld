@@ -7,6 +7,11 @@
 #include "player.h"
 #include "MyContactListener.h"
 
+
+static const char s_back[]                = "Images/background.png";
+static const char s_TilesPng[]            = "TileMaps/tiles.png";
+static const char s_LevelMapTga[]         = "TileMaps/levelmap.tga";
+
 class GameLayer : public cocos2d::CCLayer
 {
 public:
@@ -23,6 +28,10 @@ public:
     LAYER_CREATE_FUNC(GameLayer);
 
 	void initPhysics();
+
+	void initBackground();
+
+	b2Body* addPhysicsObject(cocos2d::CCSprite* ObjectSprite, b2BodyType type);
 
 	void update(float dt);
 
