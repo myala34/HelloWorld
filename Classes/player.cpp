@@ -3,7 +3,8 @@
 
 
 
-USING_NS_CC;
+using namespace cocos2d;
+
 #define PTM_RATIO 32
 
 player::player(CCLayer* gl)
@@ -30,15 +31,40 @@ CCSprite* player::initPlayer()
 
 	CCSpriteFrameCache* cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 
-	CCArray *animFrames = new CCArray(2);
-	CCSpriteFrame *frame = cache->spriteFrameByName("monkey/walk/right_1.png");
-	animFrames->addObject(frame);
-	frame = cache->spriteFrameByName("monkey/walk/right_2.png");
-	animFrames->addObject(frame);
-	//animFrames->autorelease();
-	walkAnimation= CCAnimation::animationWithSpriteFrames(animFrames, 0.1f);
-	walkAnimation->retain();
+//	CCArray *animFrames = new CCArray(2);
+//	CCSpriteFrame *frame = cache->spriteFrameByName("monkey/walk/right_1.png");
+//	animFrames->addObject(frame);
+//	frame = cache->spriteFrameByName("monkey/walk/right_2.png");
+//	animFrames->addObject(frame);
+//	//animFrames->autorelease();
+//	walkAnimation= CCAnimation::animationWithSpriteFrames(animFrames, 0.1f);
+//	walkAnimation->retain();
 
+    CCArray *animFrames = new CCArray(10);
+    CCSpriteFrame *frame = cache->spriteFrameByName("1.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("2.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("3.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("4.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("5.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("6.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("7.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("8.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("9.png");
+    animFrames->addObject(frame);
+    frame = cache->spriteFrameByName("10.png");
+    animFrames->addObject(frame);
+    
+	walkAnimation= CCAnimation::animationWithSpriteFrames(animFrames, 0.05f);
+	walkAnimation->retain();
+    
 	CCArray *jumpFrames = new CCArray(1);	
 	frame = cache->spriteFrameByName("monkey/jump/right.png");
 	jumpFrames->addObject(frame);

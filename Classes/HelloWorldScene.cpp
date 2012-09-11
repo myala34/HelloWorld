@@ -162,6 +162,7 @@ bool GameLayer::init()
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	//cache->addSpriteFramesWithFile("background.plist");
 	cache->addSpriteFramesWithFile("jungle.plist");
+    cache->addSpriteFramesWithFile("Player.plist");
 
 	//CCSprite* backgroud = CCSprite::spriteWithSpriteFrameName("jungle.png");
 	//this->addChild(backgroud, 0);

@@ -260,6 +260,8 @@
 		2C032F1415FF313700C03E56 /* jungle-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C032EF915FF313700C03E56 /* jungle-hd.png */; };
 		2C032F1615FF313700C03E56 /* jungle.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C032EFB15FF313700C03E56 /* jungle.plist */; };
 		2C032F1715FF313700C03E56 /* jungle.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C032EFC15FF313700C03E56 /* jungle.png */; };
+		2CD9592D15FF3D620006B69B /* Player.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2CD9592B15FF3D620006B69B /* Player.plist */; };
+		2CD9592E15FF3D620006B69B /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CD9592C15FF3D620006B69B /* Player.png */; };
 		2CE5758315FF31AC00D3B900 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = 2CE5758215FF31AC00D3B900 /* Images */; };
 		2CE5758515FF31B500D3B900 /* TileMaps in Resources */ = {isa = PBXBuildFile; fileRef = 2CE5758415FF31B500D3B900 /* TileMaps */; };
 /* End PBXBuildFile section */
@@ -782,6 +784,8 @@
 		2C032EF915FF313700C03E56 /* jungle-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jungle-hd.png"; sourceTree = "<group>"; };
 		2C032EFB15FF313700C03E56 /* jungle.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = jungle.plist; sourceTree = "<group>"; };
 		2C032EFC15FF313700C03E56 /* jungle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jungle.png; sourceTree = "<group>"; };
+		2CD9592B15FF3D620006B69B /* Player.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Player.plist; sourceTree = "<group>"; };
+		2CD9592C15FF3D620006B69B /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Player.png; sourceTree = "<group>"; };
 		2CE5758215FF31AC00D3B900 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		2CE5758415FF31B500D3B900 /* TileMaps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TileMaps; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1798,6 +1802,8 @@
 				2C032EF015FF313700C03E56 /* CloseSelected.png */,
 				2C032EF115FF313700C03E56 /* Default.png */,
 				2C032EF215FF313700C03E56 /* fps_images-hd.png */,
+				2CD9592B15FF3D620006B69B /* Player.plist */,
+				2CD9592C15FF3D620006B69B /* Player.png */,
 				2C032EF315FF313700C03E56 /* fps_images-ipadhd.png */,
 				2C032EF415FF313700C03E56 /* fps_images.png */,
 				2C032EF515FF313700C03E56 /* HelloWorld.png */,
@@ -1894,6 +1900,8 @@
 				2C032F1715FF313700C03E56 /* jungle.png in Resources */,
 				2CE5758315FF31AC00D3B900 /* Images in Resources */,
 				2CE5758515FF31B500D3B900 /* TileMaps in Resources */,
+				2CD9592D15FF3D620006B69B /* Player.plist in Resources */,
+				2CD9592E15FF3D620006B69B /* Player.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
