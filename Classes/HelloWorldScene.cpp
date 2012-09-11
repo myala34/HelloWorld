@@ -342,14 +342,19 @@ b2Body* GameLayer::addPhysicsObject(cocos2d::CCSprite* ObjectSprite, b2BodyType 
 
 void GameLayer::draw()
 {
-	glDisable(GL_TEXTURE_2D);  
-	glDisableClientState(GL_COLOR_ARRAY);  
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);  
-
-	world->DrawDebugData();  
-
-	glEnable(GL_TEXTURE_2D);  
-	glEnableClientState(GL_COLOR_ARRAY);  
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    //
+    // IMPORTANT:
+    // This is only for debug purposes
+    // It is recommend to disable it
+    //
+    CCLayer::draw();
+    
+    ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
+    
+    kmGLPushMatrix();
+    
+    world->DrawDebugData();
+    
+    kmGLPopMatrix();
 }
 
