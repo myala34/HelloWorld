@@ -6,6 +6,7 @@
 #include "GLES-Render.h"
 #include "player.h"
 #include "MyContactListener.h"
+#include "GB2ShapeCache.h"
 
 
 static const char s_back[]                = "Images/background.png";

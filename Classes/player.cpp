@@ -72,7 +72,7 @@ CCSprite* player::initPlayer()
 	jumpAnimation->retain();
 
 	playerSprite = CCSprite::spriteWithSpriteFrameName("monkey/walk/right_1.png");
-	playerSprite->setPosition(ccp(size.width/5, size.height/2));
+	playerSprite->setPosition(ccp(size.width/10, size.height/2));
 	playerSprite->runAction(CCRepeatForever::actionWithAction(CCAnimate::actionWithAnimation(walkAnimation)));
 
 	b2BodyDef playerBodyDef;
