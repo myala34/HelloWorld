@@ -12,7 +12,6 @@ enum
 	kTagPlayer,
 	kTagNode,
 	kTagGrossini,
-	kTagFloor,
 };
 
 void GameLayer::initPhysics()
@@ -41,8 +40,8 @@ void GameLayer::initPhysics()
 
 	// bottom
 
-	//groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
-	//m_bottomFixture = groundBody->CreateFixture(&groundBox,0);
+	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
+	m_bottomFixture = groundBody->CreateFixture(&groundBox,0);
 
 	// top
 	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
@@ -160,21 +159,10 @@ bool GameLayer::init()
     
 	this->initBackground();
 
-	GB2ShapeCache::sharedGB2ShapeCache()->addShapesWithFile("floor_test.plist");
-
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	//cache->addSpriteFramesWithFile("background.plist");
 	cache->addSpriteFramesWithFile("jungle.plist");
     cache->addSpriteFramesWithFile("Player.plist");
-	cache->addSpriteFramesWithFile("floor.plist");
-
-
-	CCSprite* floor1 = CCSprite::spriteWithSpriteFrameName("tile1.png");
-	this->addChild(floor1, 1, kTagFloor);
-	b2BodyDef floor1bodyDef;
-	b2Body* floor1Body = world->CreateBody(&floor1bodyDef);
-
-	GB2ShapeCache::sharedGB2ShapeCache()->addFixturesToBody(floor1Body, "tile1");
 
 	//CCSprite* backgroud = CCSprite::spriteWithSpriteFrameName("jungle.png");
 	//this->addChild(backgroud, 0);
@@ -182,14 +170,11 @@ bool GameLayer::init()
 	//backgroud->setPosition(CCPointZero);
 
 
-	//CCSprite* floorBackground = CCSprite::spriteWithSpriteFrameName("floor/grassbehind.png");
-	//this->addChild(floorBackground, 1, kTagFloor);
-	//floorBackground->setAnchorPoint(CCPointZero);
-	//b2Body* floorBody = addPhysicsObject(floorBackground, b2_staticBody);
-	//floorBackground->setPosition(CCPointZero);
-
-
-
+	CCSprite* floorBackground = CCSprite::spriteWithSpriteFrameName("floor/grassbehind.png");
+	this->addChild(floorBackground, 1);
+	floorBackground->setAnchorPoint(CCPointZero);
+	b2Body* floorBody = addPhysicsObject(floorBackground, b2_staticBody);
+	floorBackground->setPosition(CCPointZero);
 
 	m_player = new player(this);
 
@@ -263,28 +248,17 @@ void GameLayer::update(float dt)
 	{
 		MyContact contact = *pos;
 
-		CCSprite* spriteA = (CCSprite *)contact.fixtureA->GetBody()->GetUserData();
-		CCSprite* spriteB = (CCSprite *)contact.fixtureB->GetBody()->GetUserData();
-
-		if(spriteA != NULL && spriteB != NULL)
-		{
-
-		
-		if((spriteA->getTag() == kTagFloor && spriteB->getTag() == kTagPlayer) ||
-			(spriteA->getTag() == kTagPlayer && spriteB->getTag() == kTagFloor))
-		//if ((contact.fixtureA == m_bottomFixture && contact.fixtureB == m_playerFixture) ||
-		//	(contact.fixtureA == m_playerFixture && contact.fixtureB == m_bottomFixture))
+		if ((contact.fixtureA == m_bottomFixture && contact.fixtureB == m_playerFixture) ||
+			(contact.fixtureA == m_playerFixture && contact.fixtureB == m_bottomFixture))
 		{
 			//CCLOG("down !");
 			if (m_canJump == false)
 			{
-				m_canJump = true;
 				m_player->walk();
+				m_canJump = true;
 			}
 
 		}
-		}
-		
 	}
 }
 
@@ -334,7 +308,6 @@ void GameLayer::ccTouchesEnded(cocos2d::CCSet *touches, cocos2d::CCEvent *pEvent
 	//	location = CCDirector::sharedDirector()->convertToGL(location);
 
 	//}
-
 }
 
 b2World* GameLayer::GetPhysicsWorld()
